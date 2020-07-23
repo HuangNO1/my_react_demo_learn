@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+// 函數式組件
 function App() {
   return (
     <div className="App">
