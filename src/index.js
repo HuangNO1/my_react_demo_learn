@@ -110,20 +110,105 @@ serviceWorker.unregister();
 // 函數式組件 stateless 無生命週期
 // 類組件 stateful 有生命週期
 // 類組件中可以在包含組件 -> 複合組件
-class HelloWorld extends React.Component {
-  render(){
-    console.log(this)
+// class HelloWorld extends React.Component {
+//   render(){
+//     console.log(this)
+//     return (
+//       <div>
+//         <h1>類組件 Hello World</h1>
+//         {/* 類組件傳參 */}
+//         {/* <h2>hello: {this.props.name}</h2> */}
+//       </div>
+//     )
+//   }
+// }
+
+// ReactDOM.render(
+//   <HelloWorld />,
+//   document.querySelector('#root')
+// )
+
+// React State 相當於 Vue 的 Data
+// 用類組件實現
+
+class ClockClass extends React.Component {
+  // 構造函數
+  constructor(props) {
+    super(props)
+    // 狀態 (數據) -> View
+    this.state = {
+      time: new Date().toLocaleTimeString()
+    }
+  }
+
+  render() {
+    // this.state.time = new Date().toLocaleTimeString();
     return (
       <div>
-        <h1>類組件 Hello World</h1>
-        {/* 類組件傳參 */}
-        {/* <h2>hello: {this.props.name}</h2> */}
+        <h1>{this.state.time}</h1>
       </div>
     )
+  }
+  // 生命周期函數
+  // 組件渲染完成時調用的函數
+  componentDidMount() {
+    setInterval(() => {
+      // 錯誤的改變方式
+      // this.state.time = new Date().toLocaleTimeString();
+      // 正確的修改，使用 setState
+      // 切勿直接修改 state 數據，直接 state 重新渲染內容，需使用 setState
+      // setState 是異步
+      // 通過 this.setState 修改完數據後，並不會立即修改 DOM 裡面的內容
+      // react 會在這個修改函數內容所有設置改變後，統一對比虛擬 DOM 對象，然後再統一修改，提升性能
+      this.setState({
+        time: new Date().toLocaleTimeString()
+      })
+    }, 1000)
   }
 }
 
 ReactDOM.render(
-  <HelloWorld />,
+  <ClockClass />,
   document.querySelector('#root')
 )
+
+// 不推薦的方法，因為跟組件 Dom 渲染綁在一起
+// setInterval(() => {
+//   ReactDOM.render(
+//     <ClockClass />,
+//     document.querySelector('#root')
+//   )
+// }, 1000)
+
+// class Tab extends React.Component {
+//   constructor(props) {
+//     super(props)
+
+//     // 設置狀態和數據
+//     this.state = {
+//       isActive: "",
+//       strClass: ""
+//     }
+
+//     this.clickEvent = this.clickEvent.bind(this)
+//   }
+
+//   clickEvent() {
+//     console.log("click event")
+//   }
+
+//   render() {
+//     return (
+//       <div>
+//         <button onClick={this.clickEvent}>content 1</button>
+//         <button>content 2</button>
+//         <div className="content active">
+//           <h1>content 1</h1>
+//         </div>
+//         <div className="content">
+//           <h1>content 2</h1>
+//         </div>
+//       </div>
+//     )
+//   }
+// }
