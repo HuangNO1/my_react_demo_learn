@@ -268,12 +268,10 @@ serviceWorker.unregister();
 //   }
 // }
 
-
 // ReactDOM.render(
 //   <ParentCom />,
 //   document.querySelector('#root')
 // )
-
 
 // 子傳父
 // 調用父元素的函數從而操作子元素的數據，從而實現 子 -> 父
@@ -347,27 +345,38 @@ class ClickCom extends React.Component {
         <form action="https://www.google.com" target="_blank">
           <button onClick={this.preventEvent}>submit</button>
         </form>
-        {/* 傳參使用匿名函數 */}
-        <button onClick={(e) => {this.preventEvent1('msg: 123', e)} }>submit</button>
+        {/* es6 箭頭函數 */}
+        <button
+          onClick={(e) => {
+            this.preventEvent1("msg: 123", e);
+          }}
+        >
+          submit
+        </button>
+        {/* 不使用 es6 箭頭函數傳遞多個參數的方式 */}
+        <button
+          onClick={function (e) {
+            this.preventEvent1("msg: 123", e);
+          }.bind(this)}
+        >
+          submit
+        </button>
       </div>
-    )
+    );
   }
 
   preventEvent = (e) => {
-    console.log(e.preventDefault)
+    console.log(e.preventDefault);
     e.preventDefault();
     // js 原生寫法
     // return false
-  }
+  };
 
   preventEvent1 = (msg, e) => {
-    console.log(msg)
+    console.log(msg);
     // js 原生寫法
     // return false
-  }
+  };
 }
 
-ReactDOM.render(
-  <ClickCom />,
-  document.querySelector('#root')
-)
+ReactDOM.render(<ClickCom />, document.querySelector("#root"));
