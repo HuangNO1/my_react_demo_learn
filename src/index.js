@@ -220,56 +220,116 @@ serviceWorker.unregister();
 
 // 在父元素中使用 state 去控制子元素 props 的從而達到父元素數據傳遞給子元素
 
-class ParentCom extends React.Component {
+// class ParentCom extends React.Component {
+//   constructor(props) {
+//     super(props)
+//     this.state = {
+//       isAction: true
+//     }
+
+//     // 綁定事件
+//     this.changeShow = this.changeShow.bind(this)
+//   }
+
+//   render() {
+//     return (
+//       <div>
+//         <button onClick={this.changeShow}>控制子元素顯示</button>
+//         <ChildrenCom isAction={this.state.isAction}/>
+//       </div>
+//     )
+//   }
+
+//   changeShow() {
+//     this.setState({
+//       isAction: !this.state.isAction
+//     })
+//   }
+// }
+
+// class ChildrenCom extends React.Component {
+//   constructor(props) {
+//     super(props)
+//   }
+
+//   render() {
+//     let strClass = null;
+//     if(this.props.isAction) {
+//       strClass = 'active'
+//     } else {
+//       strClass = ''
+//     }
+
+//     return (
+//       <div className={"content " + strClass}>
+//         <h1>我是子元素</h1>
+//       </div>
+//     )
+//   }
+// }
+
+
+// ReactDOM.render(
+//   <ParentCom />,
+//   document.querySelector('#root')
+// )
+
+
+// 子傳父
+// 調用父元素的函數從而操作子元素的數據，從而實現 子 -> 父
+
+class ParentCom2 extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isAction: true
+      childData: null
     }
-
-    // 綁定事件
-    this.changeShow = this.changeShow.bind(this)
   }
 
   render() {
     return (
       <div>
-        <button onClick={this.changeShow}>控制子元素顯示</button>
-        <ChildrenCom isAction={this.state.isAction}/>
+        <h1>子傳父的數據：{this.state.childData}</h1>
+        {/* 傳遞函式給子組件 */}
+        <ChildrenCom2 setChildData={this.setChildData}/>
       </div>
     )
   }
 
-  changeShow() {
+  setChildData = (data) => {
     this.setState({
-      isAction: !this.state.isAction
+      childData: data
     })
   }
 }
 
-class ChildrenCom extends React.Component {
+class ChildrenCom2 extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      msg: "hello"
+    }
   }
 
   render() {
-    let strClass = null;
-    if(this.props.isAction) {
-      strClass = 'active'
-    } else {
-      strClass = ''
-    }
-
     return (
-      <div className={"content " + strClass}>
-        <h1>我是子元素</h1>
+      <div>
+        <button onClick={this.sendData}>傳遞 hello 給父元素</button>
+        {/* 更簡單的方法 */}
+        <button onClick={ () => {this.props.setChildData('直接傳')}}>傳遞 hello 給父元素</button>
       </div>
     )
   }
+  // 搞成箭頭函數
+  sendData = () => {
+    console.log(this.state.msg)
+    // 用 props 拿到父組件的函數
+    // 將子元素數據傳遞給父元素
+    this.props.setChildData(this.state.msg)
+  }
 }
 
-
 ReactDOM.render(
-  <ParentCom />,
+  <ParentCom2 />,
   document.querySelector('#root')
 )
