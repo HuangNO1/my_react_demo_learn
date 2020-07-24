@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Children } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
@@ -131,46 +131,46 @@ serviceWorker.unregister();
 // React State 相當於 Vue 的 Data
 // 用類組件實現
 
-class ClockClass extends React.Component {
-  // 構造函數
-  constructor(props) {
-    super(props)
-    // 狀態 (數據) -> View
-    this.state = {
-      time: new Date().toLocaleTimeString()
-    }
-  }
+// class ClockClass extends React.Component {
+//   // 構造函數
+//   constructor(props) {
+//     super(props)
+//     // 狀態 (數據) -> View
+//     this.state = {
+//       time: new Date().toLocaleTimeString()
+//     }
+//   }
 
-  render() {
-    // this.state.time = new Date().toLocaleTimeString();
-    return (
-      <div>
-        <h1>{this.state.time}</h1>
-      </div>
-    )
-  }
-  // 生命周期函數
-  // 組件渲染完成時調用的函數
-  componentDidMount() {
-    setInterval(() => {
-      // 錯誤的改變方式
-      // this.state.time = new Date().toLocaleTimeString();
-      // 正確的修改，使用 setState
-      // 切勿直接修改 state 數據，直接 state 重新渲染內容，需使用 setState
-      // setState 是異步
-      // 通過 this.setState 修改完數據後，並不會立即修改 DOM 裡面的內容
-      // react 會在這個修改函數內容所有設置改變後，統一對比虛擬 DOM 對象，然後再統一修改，提升性能
-      this.setState({
-        time: new Date().toLocaleTimeString()
-      })
-    }, 1000)
-  }
-}
+//   render() {
+//     // this.state.time = new Date().toLocaleTimeString();
+//     return (
+//       <div>
+//         <h1>{this.state.time}</h1>
+//       </div>
+//     )
+//   }
+//   // 生命周期函數
+//   // 組件渲染完成時調用的函數
+//   componentDidMount() {
+//     setInterval(() => {
+//       // 錯誤的改變方式
+//       // this.state.time = new Date().toLocaleTimeString();
+//       // 正確的修改，使用 setState
+//       // 切勿直接修改 state 數據，直接 state 重新渲染內容，需使用 setState
+//       // setState 是異步
+//       // 通過 this.setState 修改完數據後，並不會立即修改 DOM 裡面的內容
+//       // react 會在這個修改函數內容所有設置改變後，統一對比虛擬 DOM 對象，然後再統一修改，提升性能
+//       this.setState({
+//         time: new Date().toLocaleTimeString()
+//       })
+//     }, 1000)
+//   }
+// }
 
-ReactDOM.render(
-  <ClockClass />,
-  document.querySelector('#root')
-)
+// ReactDOM.render(
+//   <ClockClass />,
+//   document.querySelector('#root')
+// )
 
 // 不推薦的方法，因為跟組件 Dom 渲染綁在一起
 // setInterval(() => {
@@ -212,3 +212,64 @@ ReactDOM.render(
 //     )
 //   }
 // }
+
+// Props
+// 父傳子組件數據，單向流動，不能子傳父
+// props 可以設置默認值
+// 注意：props 可以傳遞函數，props 可以傳遞父函數的元素，就可以去修改父元素的 state，從而達到傳遞數據給父元素
+
+// 在父元素中使用 state 去控制子元素 props 的從而達到父元素數據傳遞給子元素
+
+class ParentCom extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isAction: true
+    }
+
+    // 綁定事件
+    this.changeShow = this.changeShow.bind(this)
+  }
+
+  render() {
+    return (
+      <div>
+        <button onClick={this.changeShow}>控制子元素顯示</button>
+        <ChildrenCom isAction={this.state.isAction}/>
+      </div>
+    )
+  }
+
+  changeShow() {
+    this.setState({
+      isAction: !this.state.isAction
+    })
+  }
+}
+
+class ChildrenCom extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
+    let strClass = null;
+    if(this.props.isAction) {
+      strClass = 'active'
+    } else {
+      strClass = ''
+    }
+
+    return (
+      <div className={"content " + strClass}>
+        <h1>我是子元素</h1>
+      </div>
+    )
+  }
+}
+
+
+ReactDOM.render(
+  <ParentCom />,
+  document.querySelector('#root')
+)
