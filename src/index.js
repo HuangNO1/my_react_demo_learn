@@ -419,24 +419,124 @@ serviceWorker.unregister();
 
 // List 渲染
 
-let array = ["banana", "apple", "peach"];
+// let array = ["banana", "apple", "peach"];
 
-let arrayHTML = [<li>banana</li>, <li>apple</li>, <li>peach</li>]
+// let arrayHTML = [<li>banana</li>, <li>apple</li>, <li>peach</li>]
+
+// class Welcome extends React.Component {
+//   constructor(props) {
+//     super(props)
+//   }
+
+//   render() {
+//     return (
+//       <div>
+//         <ul>
+//           {array}
+//           {arrayHTML}
+//         </ul>
+//       </div>
+//     )
+//   }
+// }
+
+// ReactDOM.render(<Welcome />, document.querySelector("#root"));
+
+function ListItem(props) {
+  return (
+    <li key={props.index}>
+      <h3>
+        {props.index} : {props.data.title}
+      </h3>
+      <p>{props.data.content}</p>
+    </li>
+  );
+}
+
+// 有動態事件的方式
+class ListItem2 extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <li
+        key={this.props.index}
+        onClick={(event) => {
+          this.clickEvent(this.props.index, this.props.data.title, event);
+        }}
+      >
+        <h3>
+          {this.props.index} : {this.props.data.title}
+        </h3>
+        <p>{this.props.data.content}</p>
+      </li>
+    );
+  }
+
+  clickEvent = (index, title, event) => {
+    alert(index + " - " + title);
+  };
+}
 
 class Welcome extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
+    this.state = {
+      list: [
+        {
+          title: "NO1 111",
+          content: "11111",
+        },
+        {
+          title: "NO2 222",
+          content: "222",
+        },
+        {
+          title: "NO3 333",
+          content: "333",
+        },
+      ],
+    };
   }
-  
+
   render() {
+    // 最原始方法
+    // let listArr = [];
+    // for(let i = 0; i < this.state.list.length; i++) {
+    //   let item = (
+    //     <ul>
+    //       <li><h3>{this.state.list[i].title}</h3></li>
+    //       <li><h5>{this.state.list[i].content}</h5></li>
+    //     </ul>
+    //   )
+
+    //   listArr.push(item);
+    // }
+
+    // 使用數組 map 方法，對每一項數據進行 JSX 的形式進行加工，
+    // 最終得到 1 個每一項都是 JSX 對象的數組，將數組渲染到模板。
+    // Key 需要放入每一項中
+    let listArr = this.state.list.map((item, index) => {
+      return (
+        // <li key={index}>
+        //   <h3>{index} : { item.title }</h3>
+        //   <p>{ item.content }</p>
+        // </li>
+        // <ListItem data={item} index={index} key={index} />
+
+        <ListItem2 data={item} index={index} key={index} />
+      );
+    });
+
     return (
       <div>
-        <ul>
-          {array}
-          {arrayHTML}
-        </ul>
+        {/* 最原始方式 */}
+        {/* {listArr} */}
+        <ul>{listArr}</ul>
       </div>
-    )
+    );
   }
 }
 
