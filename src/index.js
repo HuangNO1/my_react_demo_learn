@@ -338,45 +338,106 @@ serviceWorker.unregister();
 
 // 原生 js 阻止默認行為時，可以直接返回 return false
 // react 中，阻止默認必須使用 e.preventDefault();
-class ClickCom extends React.Component {
+// class ClickCom extends React.Component {
+//   render() {
+//     return (
+//       <div>
+//         <form action="https://www.google.com" target="_blank">
+//           <button onClick={this.preventEvent}>submit</button>
+//         </form>
+//         {/* es6 箭頭函數 */}
+//         <button
+//           onClick={(e) => {
+//             this.preventEvent1("msg: 123", e);
+//           }}
+//         >
+//           submit
+//         </button>
+//         {/* 不使用 es6 箭頭函數傳遞多個參數的方式 */}
+//         <button
+//           onClick={function (e) {
+//             this.preventEvent1("msg: 123", e);
+//           }.bind(this)}
+//         >
+//           submit
+//         </button>
+//       </div>
+//     );
+//   }
+
+//   preventEvent = (e) => {
+//     console.log(e.preventDefault);
+//     e.preventDefault();
+//     // js 原生寫法
+//     // return false
+//   };
+
+//   preventEvent1 = (msg, e) => {
+//     console.log(msg);
+//     // js 原生寫法
+//     // return false
+//   };
+// }
+
+// ReactDOM.render(<ClickCom />, document.querySelector("#root"));
+
+// React 條件渲染
+
+// 1. 直接通過條件運算返回要渲染的 JSX 對象
+// 2. 通過條件運算得出 JSX 對象，將對象渲染到模板
+
+// 情況一
+// function UserGreet(params) {
+//   return (<h1>welcome to sign in</h1>)
+// }
+
+// function UserLogin(params) {
+//   return (<h1>請先登入</h1>)
+// }
+
+// class ParentCom extends React.Component {
+//   constructor(props) {
+//     super(props)
+//     this.state = {
+//       isLogin: false
+//     }
+//   }
+
+//   render() {
+//     if(this.state.isLogin) {
+//       return (<UserGreet/>)
+//     } else {
+//       return (<UserLogin/>)
+//     }
+//   }
+// }
+
+// ReactDOM.render(<ParentCom />, document.querySelector("#root"));
+
+// 情況二
+// 自己類推
+
+// List 渲染
+
+let array = ["banana", "apple", "peach"];
+
+let arrayHTML = [<li>banana</li>, <li>apple</li>, <li>peach</li>]
+
+class Welcome extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+  
   render() {
     return (
       <div>
-        <form action="https://www.google.com" target="_blank">
-          <button onClick={this.preventEvent}>submit</button>
-        </form>
-        {/* es6 箭頭函數 */}
-        <button
-          onClick={(e) => {
-            this.preventEvent1("msg: 123", e);
-          }}
-        >
-          submit
-        </button>
-        {/* 不使用 es6 箭頭函數傳遞多個參數的方式 */}
-        <button
-          onClick={function (e) {
-            this.preventEvent1("msg: 123", e);
-          }.bind(this)}
-        >
-          submit
-        </button>
+        <ul>
+          {array}
+          {arrayHTML}
+        </ul>
       </div>
-    );
+    )
   }
-
-  preventEvent = (e) => {
-    console.log(e.preventDefault);
-    e.preventDefault();
-    // js 原生寫法
-    // return false
-  };
-
-  preventEvent1 = (msg, e) => {
-    console.log(msg);
-    // js 原生寫法
-    // return false
-  };
 }
 
-ReactDOM.render(<ClickCom />, document.querySelector("#root"));
+ReactDOM.render(<Welcome />, document.querySelector("#root"));
