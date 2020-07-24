@@ -112,9 +112,12 @@ serviceWorker.unregister();
 // 類組件中可以在包含組件 -> 複合組件
 class HelloWorld extends React.Component {
   render(){
+    console.log(this)
     return (
       <div>
         <h1>類組件 Hello World</h1>
+        {/* 類組件傳參 */}
+        {/* <h2>hello: {this.props.name}</h2> */}
       </div>
     )
   }
