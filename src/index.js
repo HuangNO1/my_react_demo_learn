@@ -278,58 +278,96 @@ serviceWorker.unregister();
 // 子傳父
 // 調用父元素的函數從而操作子元素的數據，從而實現 子 -> 父
 
-class ParentCom2 extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      childData: null
-    }
-  }
+// class ParentCom2 extends React.Component {
+//   constructor(props) {
+//     super(props)
+//     this.state = {
+//       childData: null
+//     }
+//   }
 
+//   render() {
+//     return (
+//       <div>
+//         <h1>子傳父的數據：{this.state.childData}</h1>
+//         {/* 傳遞函式給子組件 */}
+//         <ChildrenCom2 setChildData={this.setChildData}/>
+//       </div>
+//     )
+//   }
+
+//   setChildData = (data) => {
+//     this.setState({
+//       childData: data
+//     })
+//   }
+// }
+
+// class ChildrenCom2 extends React.Component {
+//   constructor(props) {
+//     super(props)
+//     this.state = {
+//       msg: "hello"
+//     }
+//   }
+
+//   render() {
+//     return (
+//       <div>
+//         <button onClick={this.sendData}>傳遞 hello 給父元素</button>
+//         {/* 更簡單的方法 */}
+//         <button onClick={ () => {this.props.setChildData('直接傳')}}>傳遞 hello 給父元素</button>
+//       </div>
+//     )
+//   }
+//   // 搞成箭頭函數
+//   sendData = () => {
+//     console.log(this.state.msg)
+//     // 用 props 拿到父組件的函數
+//     // 將子元素數據傳遞給父元素
+//     this.props.setChildData(this.state.msg)
+//   }
+// }
+
+// ReactDOM.render(
+//   <ParentCom2 />,
+//   document.querySelector('#root')
+// )
+
+// React event
+// 綁定事件使用駝峰命名法
+// {} 傳入一個函數，不是 String
+
+// 原生 js 阻止默認行為時，可以直接返回 return false
+// react 中，阻止默認必須使用 e.preventDefault();
+class ClickCom extends React.Component {
   render() {
     return (
       <div>
-        <h1>子傳父的數據：{this.state.childData}</h1>
-        {/* 傳遞函式給子組件 */}
-        <ChildrenCom2 setChildData={this.setChildData}/>
+        <form action="https://www.google.com" target="_blank">
+          <button onClick={this.preventEvent}>submit</button>
+        </form>
+        {/* 傳參使用匿名函數 */}
+        <button onClick={(e) => {this.preventEvent1('msg: 123', e)} }>submit</button>
       </div>
     )
   }
 
-  setChildData = (data) => {
-    this.setState({
-      childData: data
-    })
-  }
-}
-
-class ChildrenCom2 extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      msg: "hello"
-    }
+  preventEvent = (e) => {
+    console.log(e.preventDefault)
+    e.preventDefault();
+    // js 原生寫法
+    // return false
   }
 
-  render() {
-    return (
-      <div>
-        <button onClick={this.sendData}>傳遞 hello 給父元素</button>
-        {/* 更簡單的方法 */}
-        <button onClick={ () => {this.props.setChildData('直接傳')}}>傳遞 hello 給父元素</button>
-      </div>
-    )
-  }
-  // 搞成箭頭函數
-  sendData = () => {
-    console.log(this.state.msg)
-    // 用 props 拿到父組件的函數
-    // 將子元素數據傳遞給父元素
-    this.props.setChildData(this.state.msg)
+  preventEvent1 = (msg, e) => {
+    console.log(msg)
+    // js 原生寫法
+    // return false
   }
 }
 
 ReactDOM.render(
-  <ParentCom2 />,
+  <ClickCom />,
   document.querySelector('#root')
 )
