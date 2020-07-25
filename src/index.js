@@ -442,179 +442,252 @@ serviceWorker.unregister();
 
 // ReactDOM.render(<Welcome />, document.querySelector("#root"));
 
-function ListItem(props) {
-  return (
-    <li key={props.index}>
-      <h3>
-        {props.index} : {props.data.title}
-      </h3>
-      <p>{props.data.content}</p>
-    </li>
-  );
-}
+// function ListItem(props) {
+//   return (
+//     <li key={props.index}>
+//       <h3>
+//         {props.index} : {props.data.title}
+//       </h3>
+//       <p>{props.data.content}</p>
+//     </li>
+//   );
+// }
 
-// 有動態事件的方式
-class ListItem2 extends React.Component {
+// // 有動態事件的方式
+// class ListItem2 extends React.Component {
+//   constructor(props) {
+//     super(props);
+//   }
+
+//   render() {
+//     return (
+//       <li
+//         key={this.props.index}
+//         onClick={(event) => {
+//           this.clickEvent(this.props.index, this.props.data.title, event);
+//         }}
+//       >
+//         <h3>
+//           {this.props.index} : {this.props.data.title}
+//         </h3>
+//         <p>{this.props.data.content}</p>
+//       </li>
+//     );
+//   }
+
+//   clickEvent = (index, title, event) => {
+//     alert(index + " - " + title);
+//   };
+// }
+
+// class Welcome extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       list: [
+//         {
+//           title: "NO1 111",
+//           content: "11111",
+//         },
+//         {
+//           title: "NO2 222",
+//           content: "222",
+//         },
+//         {
+//           title: "NO3 333",
+//           content: "333",
+//         },
+//       ],
+//     };
+//   }
+
+//   render() {
+//     // 最原始方法
+//     // let listArr = [];
+//     // for(let i = 0; i < this.state.list.length; i++) {
+//     //   let item = (
+//     //     <ul>
+//     //       <li><h3>{this.state.list[i].title}</h3></li>
+//     //       <li><h5>{this.state.list[i].content}</h5></li>
+//     //     </ul>
+//     //   )
+
+//     //   listArr.push(item);
+//     // }
+
+//     // 使用數組 map 方法，對每一項數據進行 JSX 的形式進行加工，
+//     // 最終得到 1 個每一項都是 JSX 對象的數組，將數組渲染到模板。
+//     // Key 需要放入每一項中
+//     let listArr = this.state.list.map((item, index) => {
+//       return (
+//         // <li key={index}>
+//         //   <h3>{index} : { item.title }</h3>
+//         //   <p>{ item.content }</p>
+//         // </li>
+//         // <ListItem data={item} index={index} key={index} />
+
+//         <ListItem2 data={item} index={index} key={index} />
+//       );
+//     });
+
+//     return (
+//       <div>
+//         {/* 最原始方式 */}
+//         {/* {listArr} */}
+//         <ul>{listArr}</ul>
+//       </div>
+//     );
+//   }
+// }
+
+// ReactDOM.render(<Welcome />, document.querySelector("#root"));
+
+
+// // JS forEach 與 map
+
+// // forEach 是對每一項的操作，會影響原來的 array
+// // map 則是不會影響原來的 array 值，而是生成新的值返回給新的數組
+// let arr = [1, 2, 3, 4, 5, 6]
+// // 對數組直接進行循環，相當於 for，沒有返回值
+// // result 不會有返回值 即使寫了 return 也是 undefined
+// let result = arr.forEach((item, index, arr) => {
+//   console.log(item)
+//   console.log(index)
+//   console.log(arr)
+//   return item
+// })
+
+// console.log(result)
+
+// // map 對數組每一項進行加工，加工完成之後返回一個新的數組
+// arr.map((item, index, arr) => {
+//   let str = index + item + index
+//   return str;
+// })
+
+// console.log(arr)
+
+// // filter 過濾，將想要的內容進行篩選，不想要的過濾，最終得到想要的內容
+
+// let result2 = arr.filter((item, index) => {
+//   // 通過返回 true 或是 false 進行選擇
+//   // true 是要，false 是不要
+//   if (item % 2 === 0) {
+//     return true
+//   } else {
+//     return false
+//   }
+// })
+
+// console.log(result2)
+
+
+// // reduce 是對整個數組進行整合
+// // 比如你要做一個將術組裡所有的數字進行相加
+// // 將數組每一項內容整合後，返回一個內容
+
+// let arr2 = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+// let arr4 = arr2.reduce((pre, next, index) => {
+//   console.log(pre)
+//   console.log(next)
+//   console.log(index)
+//   return pre + next
+// }, 0)
+// // 這裡尾部的 0 是初始值，因為弟一個參數 沒有 pre
+
+// console.log(arr4)
+
+
+// // for...in...主要用於遍歷對象，不適用遍歷數組
+// // for...of...可以用來遍歷數組，類數組對象，字符串，set/map, generator
+
+// // for(key of obj) 裡面的是每一項
+
+// let obj = {
+//   name: "Huang",
+//   type: "handsome",
+//   content: "front end"
+// }
+
+// for(key in obj) {
+//   console.log("key: " + key + ", value: " + obj[key])
+// }
+
+// // 循環每一項
+// for (let item of arr2) {
+//   console.log(item)
+// } 
+
+// 生命週期
+// 組件從實例化到最終從頁面銷毀，整個過程就是生命週期，在這生命週期中，我們有許多可以調用的方法，俗稱鉤子函數
+
+// 三個狀態
+
+// 1. Mounting 將組件插入到 DOM 中
+// 2. Updating 將數據更新到 DOM 中
+// 3. UnMounting 將組件移除 DOM
+
+// 生命周其中的鉤子函數（方法、事件）
+
+// ComponentWillMount  組件將要渲染
+// ComponentDidMount   組件渲染完畢
+// ComponentWillReceiveProps  組件將要接受 props 數據
+// ShouldComponentUpdate   組件接收到新的 state 或是 props，判斷是否更新，返回布爾值
+// ComponentWillUpdate   組件將要更新
+// ComponentDidUpdate   組件已經更新完畢
+// ComponentWillUnMount   組件將要卸載
+
+// 可以解構
+// 這樣就不用每次都寫 react.Component
+import { Component } from 'react'
+
+class ComLife extends Component {
   constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <li
-        key={this.props.index}
-        onClick={(event) => {
-          this.clickEvent(this.props.index, this.props.data.title, event);
-        }}
-      >
-        <h3>
-          {this.props.index} : {this.props.data.title}
-        </h3>
-        <p>{this.props.data.content}</p>
-      </li>
-    );
-  }
-
-  clickEvent = (index, title, event) => {
-    alert(index + " - " + title);
-  };
-}
-
-class Welcome extends React.Component {
-  constructor(props) {
-    super(props);
+    super(props) // 調用繼承 Component 的 構造函數
     this.state = {
-      list: [
-        {
-          title: "NO1 111",
-          content: "11111",
-        },
-        {
-          title: "NO2 222",
-          content: "222",
-        },
-        {
-          title: "NO3 333",
-          content: "333",
-        },
-      ],
-    };
+      msg: "hello world msg"
+    }
+    console.log("constructor 構造函數")
+  }
+
+  componentWillMount() {
+    // 已過時
+    // 通常用來 ajax 請求
+    // 添加動畫前的類
+    console.log("ComponentWillMount  組件將要渲染")
+  }
+
+  componentDidMount() {
+    // 用來渲染動畫
+    console.log("ComponentDidMount   組件渲染完畢")
+  }
+
+  componentWillReceiveProps() {
+    // 已過時
+    // 用來查看 props 內容是什麼
+    console.log("ComponentWillReceiveProps  組件將要接受 props 數據")
+  }
+
+  componentWillUpdate() {
+    // 已過時
+    console.log("ComponentWillUpdate   組件將要更新")
+  }
+
+  componentDidUpdate() {
+    console.log("ComponentDidUpdate   組件已經更新完畢")
+  }
+
+  componentWillUnmount() {
+    console.log("ComponentWillUnMount   組件將要卸載")
   }
 
   render() {
-    // 最原始方法
-    // let listArr = [];
-    // for(let i = 0; i < this.state.list.length; i++) {
-    //   let item = (
-    //     <ul>
-    //       <li><h3>{this.state.list[i].title}</h3></li>
-    //       <li><h5>{this.state.list[i].content}</h5></li>
-    //     </ul>
-    //   )
-
-    //   listArr.push(item);
-    // }
-
-    // 使用數組 map 方法，對每一項數據進行 JSX 的形式進行加工，
-    // 最終得到 1 個每一項都是 JSX 對象的數組，將數組渲染到模板。
-    // Key 需要放入每一項中
-    let listArr = this.state.list.map((item, index) => {
-      return (
-        // <li key={index}>
-        //   <h3>{index} : { item.title }</h3>
-        //   <p>{ item.content }</p>
-        // </li>
-        // <ListItem data={item} index={index} key={index} />
-
-        <ListItem2 data={item} index={index} key={index} />
-      );
-    });
-
+    console.log("render 渲染函數")
     return (
       <div>
-        {/* 最原始方式 */}
-        {/* {listArr} */}
-        <ul>{listArr}</ul>
+        <h1>hello</h1>
       </div>
-    );
+    )
   }
 }
-
-ReactDOM.render(<Welcome />, document.querySelector("#root"));
-
-
-// JS forEach 與 map
-
-// forEach 是對每一項的操作，會影響原來的 array
-// map 則是不會影響原來的 array 值，而是生成新的值返回給新的數組
-let arr = [1, 2, 3, 4, 5, 6]
-// 對數組直接進行循環，相當於 for，沒有返回值
-// result 不會有返回值 即使寫了 return 也是 undefined
-let result = arr.forEach((item, index, arr) => {
-  console.log(item)
-  console.log(index)
-  console.log(arr)
-  return item
-})
-
-console.log(result)
-
-// map 對數組每一項進行加工，加工完成之後返回一個新的數組
-arr.map((item, index, arr) => {
-  let str = index + item + index
-  return str;
-})
-
-console.log(arr)
-
-// filter 過濾，將想要的內容進行篩選，不想要的過濾，最終得到想要的內容
-
-let result2 = arr.filter((item, index) => {
-  // 通過返回 true 或是 false 進行選擇
-  // true 是要，false 是不要
-  if (item % 2 === 0) {
-    return true
-  } else {
-    return false
-  }
-})
-
-console.log(result2)
-
-
-// reduce 是對整個數組進行整合
-// 比如你要做一個將術組裡所有的數字進行相加
-// 將數組每一項內容整合後，返回一個內容
-
-let arr2 = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-
-let arr4 = arr2.reduce((pre, next, index) => {
-  console.log(pre)
-  console.log(next)
-  console.log(index)
-  return pre + next
-}, 0)
-// 這裡尾部的 0 是初始值，因為弟一個參數 沒有 pre
-
-console.log(arr4)
-
-
-// for...in...主要用於遍歷對象，不適用遍歷數組
-// for...of...可以用來遍歷數組，類數組對象，字符串，set/map, generator
-
-// for(key of obj) 裡面的是每一項
-
-let obj = {
-  name: "Huang",
-  type: "handsome",
-  content: "front end"
-}
-
-for(key in obj) {
-  console.log("key: " + key + ", value: " + obj[key])
-}
-
-// 循環每一項
-for (let item of arr2) {
-  console.log(item)
-} 
