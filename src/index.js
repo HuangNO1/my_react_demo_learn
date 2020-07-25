@@ -542,7 +542,6 @@ serviceWorker.unregister();
 
 // ReactDOM.render(<Welcome />, document.querySelector("#root"));
 
-
 // // JS forEach 與 map
 
 // // forEach 是對每一項的操作，會影響原來的 array
@@ -581,7 +580,6 @@ serviceWorker.unregister();
 
 // console.log(result2)
 
-
 // // reduce 是對整個數組進行整合
 // // 比如你要做一個將術組裡所有的數字進行相加
 // // 將數組每一項內容整合後，返回一個內容
@@ -597,7 +595,6 @@ serviceWorker.unregister();
 // // 這裡尾部的 0 是初始值，因為弟一個參數 沒有 pre
 
 // console.log(arr4)
-
 
 // // for...in...主要用於遍歷對象，不適用遍歷數組
 // // for...of...可以用來遍歷數組，類數組對象，字符串，set/map, generator
@@ -617,7 +614,7 @@ serviceWorker.unregister();
 // // 循環每一項
 // for (let item of arr2) {
 //   console.log(item)
-// } 
+// }
 
 // 生命週期
 // 組件從實例化到最終從頁面銷毀，整個過程就是生命週期，在這生命週期中，我們有許多可以調用的方法，俗稱鉤子函數
@@ -640,54 +637,100 @@ serviceWorker.unregister();
 
 // 可以解構
 // 這樣就不用每次都寫 react.Component
-import { Component } from 'react'
+// import { Component } from 'react'
 
-class ComLife extends Component {
+// class ComLife extends Component {
+//   constructor(props) {
+//     super(props) // 調用繼承 Component 的 構造函數
+//     this.state = {
+//       msg: "hello world msg"
+//     }
+//     console.log("constructor 構造函數")
+//   }
+
+//   componentWillMount() {
+//     // 已過時
+//     // 通常用來 ajax 請求
+//     // 添加動畫前的類
+//     console.log("ComponentWillMount  組件將要渲染")
+//   }
+
+//   componentDidMount() {
+//     // 用來渲染動畫
+//     console.log("ComponentDidMount   組件渲染完畢")
+//   }
+
+//   componentWillReceiveProps() {
+//     // 已過時
+//     // 用來查看 props 內容是什麼
+//     console.log("ComponentWillReceiveProps  組件將要接受 props 數據")
+//   }
+
+//   componentWillUpdate() {
+//     // 已過時
+//     console.log("ComponentWillUpdate   組件將要更新")
+//   }
+
+//   componentDidUpdate() {
+//     console.log("ComponentDidUpdate   組件已經更新完畢")
+//   }
+
+//   componentWillUnmount() {
+//     console.log("ComponentWillUnMount   組件將要卸載")
+//   }
+
+//   render() {
+//     console.log("render 渲染函數")
+//     return (
+//       <div>
+//         <h1>hello</h1>
+//       </div>
+//     )
+//   }
+// }
+
+// React 插槽
+
+// 組件中寫入內容，這些內容可以被識別和控制。React 需要自己開發支持插槽功能
+// 原理：組件中寫入的 HTML，可以傳入到 props 中
+
+class ParentCom extends React.Component {
   constructor(props) {
-    super(props) // 調用繼承 Component 的 構造函數
+    super(props);
     this.state = {
-      msg: "hello world msg"
-    }
-    console.log("constructor 構造函數")
-  }
-
-  componentWillMount() {
-    // 已過時
-    // 通常用來 ajax 請求
-    // 添加動畫前的類
-    console.log("ComponentWillMount  組件將要渲染")
-  }
-
-  componentDidMount() {
-    // 用來渲染動畫
-    console.log("ComponentDidMount   組件渲染完畢")
-  }
-
-  componentWillReceiveProps() {
-    // 已過時
-    // 用來查看 props 內容是什麼
-    console.log("ComponentWillReceiveProps  組件將要接受 props 數據")
-  }
-
-  componentWillUpdate() {
-    // 已過時
-    console.log("ComponentWillUpdate   組件將要更新")
-  }
-
-  componentDidUpdate() {
-    console.log("ComponentDidUpdate   組件已經更新完畢")
-  }
-
-  componentWillUnmount() {
-    console.log("ComponentWillUnMount   組件將要卸載")
+      arr: [1, 2, 3],
+    };
   }
 
   render() {
-    console.log("render 渲染函數")
+    console.log(this.props)
     return (
       <div>
-        <h1>hello</h1>
+        <h1>組件插槽</h1>
+        {this.props.children}
       </div>
-    )
+    );
   }
 }
+
+class RootCom extends React.Component {
+  render() {
+    return (
+      <ParentCom>
+        {/* 插槽 */}
+        {/* 添加 data 屬性可以傳參，data- 後面接想要取的屬性名 */}
+        <h2 data-name="a" data-index={this.state.arr[0]}>
+          子組件一
+        </h2>
+        <h2 data-name="b" data-index={this.state.arr[1]}>
+          子組件二
+        </h2>
+        <h2 data-name="c" data-index={this.state.arr[2]}>
+          子組件三
+        </h2>
+      </ParentCom>
+    );
+  }
+}
+
+ReactDOM.render(<RootCom />, document.querySelector("#root"));
