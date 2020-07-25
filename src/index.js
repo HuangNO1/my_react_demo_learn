@@ -541,3 +541,80 @@ class Welcome extends React.Component {
 }
 
 ReactDOM.render(<Welcome />, document.querySelector("#root"));
+
+
+// JS forEach 與 map
+
+// forEach 是對每一項的操作，會影響原來的 array
+// map 則是不會影響原來的 array 值，而是生成新的值返回給新的數組
+let arr = [1, 2, 3, 4, 5, 6]
+// 對數組直接進行循環，相當於 for，沒有返回值
+// result 不會有返回值 即使寫了 return 也是 undefined
+let result = arr.forEach((item, index, arr) => {
+  console.log(item)
+  console.log(index)
+  console.log(arr)
+  return item
+})
+
+console.log(result)
+
+// map 對數組每一項進行加工，加工完成之後返回一個新的數組
+arr.map((item, index, arr) => {
+  let str = index + item + index
+  return str;
+})
+
+console.log(arr)
+
+// filter 過濾，將想要的內容進行篩選，不想要的過濾，最終得到想要的內容
+
+let result2 = arr.filter((item, index) => {
+  // 通過返回 true 或是 false 進行選擇
+  // true 是要，false 是不要
+  if (item % 2 === 0) {
+    return true
+  } else {
+    return false
+  }
+})
+
+console.log(result2)
+
+
+// reduce 是對整個數組進行整合
+// 比如你要做一個將術組裡所有的數字進行相加
+// 將數組每一項內容整合後，返回一個內容
+
+let arr2 = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+let arr4 = arr2.reduce((pre, next, index) => {
+  console.log(pre)
+  console.log(next)
+  console.log(index)
+  return pre + next
+}, 0)
+// 這裡尾部的 0 是初始值，因為弟一個參數 沒有 pre
+
+console.log(arr4)
+
+
+// for...in...主要用於遍歷對象，不適用遍歷數組
+// for...of...可以用來遍歷數組，類數組對象，字符串，set/map, generator
+
+// for(key of obj) 裡面的是每一項
+
+let obj = {
+  name: "Huang",
+  type: "handsome",
+  content: "front end"
+}
+
+for(key in obj) {
+  console.log("key: " + key + ", value: " + obj[key])
+}
+
+// 循環每一項
+for (let item of arr2) {
+  console.log(item)
+} 
