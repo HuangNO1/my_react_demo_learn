@@ -694,70 +694,87 @@ serviceWorker.unregister();
 // 組件中寫入內容，這些內容可以被識別和控制。React 需要自己開發支持插槽功能
 // 原理：組件中寫入的 HTML，可以傳入到 props 中
 
-class ParentCom extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      arr: [1, 2, 3],
-    };
-  }
+// class ParentCom extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       arr: [1, 2, 3],
+//     };
+//   }
 
-  render() {
-    console.log(this.props);
-    return (
-      <div>
-        <h1>組件插槽</h1>
-        {this.props.children}
-        <ChildCom>
-          <h1 data-position="header">這是放置到頭部的內容</h1>
-          <h1 data-position="main">這是放置到主要的內容</h1>
-          <h1 data-position="footer">這是放置到尾部的內容</h1>
-        </ChildCom>
-      </div>
-    );
-  }
-}
+//   render() {
+//     console.log(this.props);
+//     return (
+//       <div>
+//         <h1>組件插槽</h1>
+//         {this.props.children}
+//         <ChildCom>
+//           <h1 data-position="header">這是放置到頭部的內容</h1>
+//           <h1 data-position="main">這是放置到主要的內容</h1>
+//           <h1 data-position="footer">這是放置到尾部的內容</h1>
+//         </ChildCom>
+//       </div>
+//     );
+//   }
+// }
 
-class ChildCom extends React.Component {
-  render() {
-    let headerCom, mainCom, footerCom;
-    this.props.children.forEach((item, index) => {
-      if (item.props["data-position"] === "header") {
-        headerCom = item;
-      } else if (item.props["data-position"] === "main") {
-        mainCom = item;
-      } else {
-        footerCom = item;
-      }
-    });
-    return (
-      <div>
-        <div className="header">{headerCom}</div>
-        <div className="main">{mainCom}</div>
-        <div className="footer">{footerCom}</div>
-      </div>
-    );
-  }
-}
+// class ChildCom extends React.Component {
+//   render() {
+//     let headerCom, mainCom, footerCom;
+//     this.props.children.forEach((item, index) => {
+//       if (item.props["data-position"] === "header") {
+//         headerCom = item;
+//       } else if (item.props["data-position"] === "main") {
+//         mainCom = item;
+//       } else {
+//         footerCom = item;
+//       }
+//     });
+//     return (
+//       <div>
+//         <div className="header">{headerCom}</div>
+//         <div className="main">{mainCom}</div>
+//         <div className="footer">{footerCom}</div>
+//       </div>
+//     );
+//   }
+// }
 
-class RootCom extends React.Component {
-  render() {
-    return (
-      <ParentCom>
-        {/* 插槽 */}
-        {/* 添加 data 屬性可以傳參，data- 後面接想要取的屬性名 */}
-        <h2 data-name="a" data-index={this.state.arr[0]}>
-          子組件一
-        </h2>
-        <h2 data-name="b" data-index={this.state.arr[1]}>
-          子組件二
-        </h2>
-        <h2 data-name="c" data-index={this.state.arr[2]}>
-          子組件三
-        </h2>
-      </ParentCom>
-    );
-  }
-}
+// class RootCom extends React.Component {
+//   render() {
+//     return (
+//       <ParentCom>
+//         {/* 插槽 */}
+//         {/* 添加 data 屬性可以傳參，data- 後面接想要取的屬性名 */}
+//         <h2 data-name="a" data-index={this.state.arr[0]}>
+//           子組件一
+//         </h2>
+//         <h2 data-name="b" data-index={this.state.arr[1]}>
+//           子組件二
+//         </h2>
+//         <h2 data-name="c" data-index={this.state.arr[2]}>
+//           子組件三
+//         </h2>
+//       </ParentCom>
+//     );
+//   }
+// }
 
-ReactDOM.render(<RootCom />, document.querySelector("#root"));
+// ReactDOM.render(<RootCom />, document.querySelector("#root"));
+
+// react 路由 
+// 根據不同的路徑，顯示不同的組件(內容)，React 使用庫 react-router-dom
+// npm install react-router-dom
+
+// ReactRouter 三大組件
+// Router：所有路由組件的根組件(底層組件)，包裏路由規則的最外層容器
+// Route：路由規則匹配組件，顯示當前規則對應的組件
+// Link：路由跳轉組件
+
+// 注意：如果要精準匹配，那麼可以在 route 上設置 exact 屬性
+
+// react-router-dom
+
+// 請看 App.js
+
+ReactDOM.render(<App />, document.querySelector("#root"));
