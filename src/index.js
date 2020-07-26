@@ -795,10 +795,88 @@ import * as serviceWorker from "./serviceWorker";
 // Dispatch: 將動作觸發成方法
 // Reducer: 是一個函數，通過獲取動作，改變數據，生成一個新的狀態，從而改變頁面
 
-import { createStore } from "redux";
+// import { createStore } from "redux";
 
-// 用於通過動作，創建新的 state
-// reduce 有兩個作用，一個釋初始化數據，第二個是通過獲取動作，改變數據
+// // 用於通過動作，創建新的 state
+// // reduce 有兩個作用，一個釋初始化數據，第二個是通過獲取動作，改變數據
+// const reducer = function (state = { num: 0 }, action) {
+//   switch (action.type) {
+//     case "add":
+//       state.num++;
+//       break;
+//     case "decrement":
+//       state.num--;
+//       break;
+//     default:
+//       break;
+//   }
+//   return { ...state }; // 相當於對象的 COPY
+// };
+
+// // 創建倉庫
+// const store = createStore(reducer);
+
+// function add() {
+//   // 通過倉庫的方法 dispatch 進數據修改
+//   // dispatch 觸發 reducer
+//   store.dispatch({ type: "add" });
+//   console.log(store.getState());
+// }
+
+// function decrement() {
+//   store.dispatch({ type: "decrement" });
+//   console.log(store.getState());
+// }
+
+// const Counter = function () {
+//   let state = store.getState();
+//   return (
+//     <div>
+//       <h1>計數數量：{state.num}</h1>
+
+//       <button onClick={add}>+1</button>
+//       <button onClick={decrement}>-1</button>
+//     </div>
+//   );
+// };
+
+// ReactDOM.render(<Counter />, document.querySelector("#root"));
+
+// // 監聽數據變化，重新渲染
+// // 當數據改變時觸發
+// store.subscribe(() => {
+//   ReactDOM.render(<Counter />, document.querySelector("#root"));
+// });
+
+
+// 使用 react-redux
+
+import { createStore } from "redux";
+import { Provider, connect } from 'react-redux'
+
+class Counter extends React.Component {
+  render() {
+    // 計數，通過 store 的 state 傳給 props，直接通過 props 就可以將 state 的數據獲取
+    const value = this.props.value;
+    // 將修改數據的事件或者方法傳入到 props
+    const onAddClick = this.props.onAddClick;
+    // 等同於 VueX 的 mapMutation mapState
+
+    return (
+      <div>
+        <h1>計數數量：{value}</h1>
+
+       <button onClick={onAddClick}>+1</button>
+      </div>
+    )
+  }
+}
+
+// 動作
+const addAction = {
+  type: 'add'
+}
+
 const reducer = function (state = { num: 0 }, action) {
   switch (action.type) {
     case "add":
@@ -813,37 +891,36 @@ const reducer = function (state = { num: 0 }, action) {
   return { ...state }; // 相當於對象的 COPY
 };
 
-// 創建倉庫
 const store = createStore(reducer);
 
-function add() {
-  // 通過倉庫的方法 dispatch 進數據修改
-  // dispatch 觸發 reducer
-  store.dispatch({ type: "add" });
-  console.log(store.getState());
+// 將 state 映射到 props 函數
+function mapStateToProps(state) {
+  return {
+    value: state.num
+  }
 }
 
-function decrement() {
-  store.dispatch({ type: "decrement" });
-  console.log(store.getState());
+// 將修改 state 數據的方法，映射到 props，默認會傳入 store 裡的 dispatch 方法
+function mapDispatchToProps(dispatch) {
+  return {
+    onAddClick: () => {
+      dispatch(addAction)
+    }
+  }
 }
 
-const Counter = function () {
-  let state = store.getState();
-  return (
-    <div>
-      <h1>計數數量：{state.num}</h1>
+// 將上面的這兩個方法，將數據倉庫的 state 和修改 state 的方法映射到組件上，形成新的組件
 
-      <button onClick={add}>+1</button>
-      <button onClick={decrement}>-1</button>
-    </div>
-  );
-};
+const NewApp = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Counter)
 
-ReactDOM.render(<Counter />, document.querySelector("#root"));
+// Provider 組件：自動將 store 裡的 state 和組件進行關聯
 
-// 監聽數據變化，重新渲染
-// 當數據改變時觸發
-store.subscribe(() => {
-  ReactDOM.render(<Counter />, document.querySelector("#root"));
-});
+ReactDOM.render(
+  <Provider store={store}>
+    <NewApp></NewApp>
+  </Provider>,
+  document.querySelector("#root")
+)
