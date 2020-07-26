@@ -26,7 +26,7 @@ import * as serviceWorker from "./serviceWorker";
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+// serviceWorker.unregister();
 
 // 實現頁面時刻的顯示
 
@@ -762,7 +762,7 @@ serviceWorker.unregister();
 
 // ReactDOM.render(<RootCom />, document.querySelector("#root"));
 
-// react 路由 
+// react 路由
 // 根據不同的路徑，顯示不同的組件(內容)，React 使用庫 react-router-dom
 // npm install react-router-dom
 
@@ -777,4 +777,73 @@ serviceWorker.unregister();
 
 // 請看 App.js
 
-ReactDOM.render(<App />, document.querySelector("#root"));
+// ReactDOM.render(<App />, document.querySelector("#root"));
+
+// ReduX 類似 Vue 中用到的 VueX
+
+// ReduX
+// 解決 React 數據管理（狀態管理），用於中大型項目，數據量龐大，組件之間數據交互較多的情況下使用
+// 如果你不知道是否需要使用 Redux ，那麼你就不需要用他
+// * 解決組件的數據通信
+// * 解決數據和交互較多的應用
+
+// Redux 只是一種狀態管理解決方法
+
+// store: 數據倉庫，保存數據的地方
+// State: state 是一個對象，這個對象包含整個應用所需要的數據
+// Action: 一個動作，觸發數據改變的方法
+// Dispatch: 將動作觸發成方法
+// Reducer: 是一個函數，通過獲取動作，改變數據，生成一個新的狀態，從而改變頁面
+
+import { createStore } from "redux";
+
+// 用於通過動作，創建新的 state
+// reduce 有兩個作用，一個釋初始化數據，第二個是通過獲取動作，改變數據
+const reducer = function (state = { num: 0 }, action) {
+  switch (action.type) {
+    case "add":
+      state.num++;
+      break;
+    case "decrement":
+      state.num--;
+      break;
+    default:
+      break;
+  }
+  return { ...state }; // 相當於對象的 COPY
+};
+
+// 創建倉庫
+const store = createStore(reducer);
+
+function add() {
+  // 通過倉庫的方法 dispatch 進數據修改
+  // dispatch 觸發 reducer
+  store.dispatch({ type: "add" });
+  console.log(store.getState());
+}
+
+function decrement() {
+  store.dispatch({ type: "decrement" });
+  console.log(store.getState());
+}
+
+const Counter = function () {
+  let state = store.getState();
+  return (
+    <div>
+      <h1>計數數量：{state.num}</h1>
+
+      <button onClick={add}>+1</button>
+      <button onClick={decrement}>-1</button>
+    </div>
+  );
+};
+
+ReactDOM.render(<Counter />, document.querySelector("#root"));
+
+// 監聽數據變化，重新渲染
+// 當數據改變時觸發
+store.subscribe(() => {
+  ReactDOM.render(<Counter />, document.querySelector("#root"));
+});
