@@ -703,11 +703,38 @@ class ParentCom extends React.Component {
   }
 
   render() {
-    console.log(this.props)
+    console.log(this.props);
     return (
       <div>
         <h1>組件插槽</h1>
         {this.props.children}
+        <ChildCom>
+          <h1 data-position="header">這是放置到頭部的內容</h1>
+          <h1 data-position="main">這是放置到主要的內容</h1>
+          <h1 data-position="footer">這是放置到尾部的內容</h1>
+        </ChildCom>
+      </div>
+    );
+  }
+}
+
+class ChildCom extends React.Component {
+  render() {
+    let headerCom, mainCom, footerCom;
+    this.props.children.forEach((item, index) => {
+      if (item.props["data-position"] === "header") {
+        headerCom = item;
+      } else if (item.props["data-position"] === "main") {
+        mainCom = item;
+      } else {
+        footerCom = item;
+      }
+    });
+    return (
+      <div>
+        <div className="header">{headerCom}</div>
+        <div className="main">{mainCom}</div>
+        <div className="footer">{footerCom}</div>
       </div>
     );
   }
